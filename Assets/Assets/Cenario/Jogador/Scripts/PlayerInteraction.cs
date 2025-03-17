@@ -13,23 +13,26 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject interactionUI;
     public TextMeshProUGUI interactionText;
 
+    private Camera playerCamera;
     private Interactable currentInteractable;
+
+    void Start()
+    {
+        playerCamera = Camera.main;
+    }
 
     void Update()
     {
+        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        RaycastHit hit;
 
-        Collider[] interactablesInRange = Physics.OverlapSphere(transform.position, interactionRange, interactionLayer);
-
-        if (interactablesInRange.Length > 0)
+        if (Physics.Raycast(ray, out hit, interactionRange, interactionLayer))
         {
-
-            currentInteractable = interactablesInRange[0].GetComponent<Interactable>();
+            currentInteractable = hit.collider.GetComponent<Interactable>();
 
             if (currentInteractable != null)
             {
-
                 ShowInteractionUI(true, currentInteractable.GetInteractionMessage());
-
 
                 if (Input.GetKeyDown(interactionKey))
                 {
@@ -38,13 +41,10 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-
-                Animatable currentAnimatable = interactablesInRange[0].GetComponent<Animatable>();
+                Animatable currentAnimatable = hit.collider.GetComponent<Animatable>();
                 if (currentAnimatable != null)
                 {
-
                     ShowInteractionUI(true, currentAnimatable.GetInteractionMessage());
-
 
                     if (Input.GetKeyDown(interactionKey))
                     {
@@ -55,7 +55,6 @@ public class PlayerInteraction : MonoBehaviour
         }
         else
         {
-
             currentInteractable = null;
             ShowInteractionUI(false);
         }
@@ -73,7 +72,6 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
-
 
     private void OnDrawGizmosSelected()
     {
