@@ -15,6 +15,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private Camera playerCamera;
     private Interactable currentInteractable;
+    private bool canInteract = true;
+    private float cooldownTime = 1f;
 
     void Start()
     {
@@ -34,9 +36,10 @@ public class PlayerInteraction : MonoBehaviour
             {
                 ShowInteractionUI(true, currentInteractable.GetInteractionMessage());
 
-                if (Input.GetKeyDown(interactionKey))
+                if (Input.GetKeyDown(interactionKey) && canInteract)
                 {
                     currentInteractable.Interact();
+                    StartCoroutine(Cooldown());
                 }
             }
             else
@@ -46,9 +49,10 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     ShowInteractionUI(true, currentAnimatable.GetInteractionMessage());
 
-                    if (Input.GetKeyDown(interactionKey))
+                    if (Input.GetKeyDown(interactionKey) && canInteract)
                     {
                         currentAnimatable.Interact();
+                        StartCoroutine(Cooldown());
                     }
                 }
             }
@@ -58,6 +62,13 @@ public class PlayerInteraction : MonoBehaviour
             currentInteractable = null;
             ShowInteractionUI(false);
         }
+    }
+
+    private IEnumerator Cooldown()
+    {
+        canInteract = false;
+        yield return new WaitForSeconds(cooldownTime);
+        canInteract = true;
     }
 
     private void ShowInteractionUI(bool state, string message = "")
