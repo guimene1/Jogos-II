@@ -9,19 +9,19 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 0
-    path: Assets/Assets/Cenario/Scripts/MenuPrincipal.unity
+    path: Assets/Jogo/Tudo/Scripts/MenuPrincipal.unity
     guid: 3a71bc6aba738f348822f673946804e4
   - enabled: 0
-    path: Assets/Assets/Cenario/CenaJogo.unity
+    path: Assets/Jogo/Tudo/Cenas/CenaJogo.unity
     guid: fd4e2d94477d1164fa5b6997a7050aa5
   - enabled: 1
-    path: Assets/Menu.unity
+    path: Assets/Jogo/Tudo/Cenas/Menu.unity
     guid: e4418762a63c6c84d9adaebebd9c782d
   - enabled: 1
     path: Assets/CenaJogo.unity
     guid: 3b4e51d72ab712340bbe00bdde7b711d
   - enabled: 1
-    path: Assets/EstacaoPolicial.unity
+    path: Assets/Jogo/Tudo/Cenas/EstacaoPolicial.unity
     guid: eb0ae38853aed8e47b6f20e255bebd1f
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
