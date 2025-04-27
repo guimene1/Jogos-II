@@ -5,7 +5,7 @@ public class MenuManager : MonoBehaviour
 {
     public void Jogar()
     {
-        SceneManager.LoadScene("CenaJogo");
+        SceneManager.LoadScene("EstacaoPolicial");
     }
 
     public void Sair()
