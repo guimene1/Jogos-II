@@ -17,6 +17,7 @@ public class PlayerInteraction : MonoBehaviour
     private Interactable currentInteractable;
     private bool canInteract = true;
     private float cooldownTime = 1f;
+    private KeyItem heldKey;
 
     void Start()
     {
@@ -30,6 +31,38 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactionRange, interactionLayer))
         {
+            // Check for key items first
+            KeyItem key = hit.collider.GetComponent<KeyItem>();
+            if (key != null && heldKey == null)
+            {
+                currentInteractable = key;
+                ShowInteractionUI(true, key.GetInteractionMessage());
+
+                if (Input.GetKeyDown(interactionKey) && canInteract)
+                {
+                    key.Interact();
+                    heldKey = key;
+                    StartCoroutine(Cooldown());
+                }
+                return;
+            }
+
+            // Check for doors
+            Door door = hit.collider.GetComponent<Door>();
+            if (door != null)
+            {
+                currentInteractable = door;
+                ShowInteractionUI(true, door.GetInteractionMessage());
+
+                if (Input.GetKeyDown(interactionKey) && canInteract)
+                {
+                    door.Interact();
+                    StartCoroutine(Cooldown());
+                }
+                return;
+            }
+
+            // Original interaction system for other Interactables
             currentInteractable = hit.collider.GetComponent<Interactable>();
 
             if (currentInteractable != null)
@@ -62,6 +95,19 @@ public class PlayerInteraction : MonoBehaviour
             currentInteractable = null;
             ShowInteractionUI(false);
         }
+    }
+
+    public bool TryUseKeyOnDoor(Door door)
+    {
+        if (heldKey != null)
+        {
+            if (heldKey.TryUseKey(door))
+            {
+                heldKey = null;
+                return true;
+            }
+        }
+        return false;
     }
 
     private IEnumerator Cooldown()

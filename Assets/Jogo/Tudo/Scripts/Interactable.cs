@@ -7,15 +7,14 @@ public class Interactable : MonoBehaviour
 
     public event Action OnInteract;
 
-    public string GetInteractionMessage()
+    public virtual string GetInteractionMessage()
     {
         return string.IsNullOrEmpty(customMessage) ? "Interagir com " + gameObject.name : customMessage;
     }
 
-    public void Interact()
+    public virtual void Interact()
     {
         Debug.Log($"Interagiu com {gameObject.name}");
-
         OnInteract?.Invoke();
     }
 }
