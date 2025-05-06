@@ -8,40 +8,73 @@ public class KillerAI : MonoBehaviour
     public Transform[] patrolPoints;
     public Transform player;
     public float attackCooldown = 2f;
+    public float attackPauseDuration = 0.5f;
+
+    public AudioClip attackSound;
+    public AudioClip[] footstepSounds;
+    public AudioClip idleSound;
+    [Range(0, 1)] public float soundVolume = 0.7f;
+    public float footstepSoundDelay = 1f;
 
     private NavMeshAgent agent;
     private Animator animator;
+
+    private AudioSource sfxSource; // Para ataques/passos
+    private AudioSource idleSource; // Para som idle
+
     private bool isChasing;
     private float chaseTimer;
     private float attackTimer;
     private bool isAttacking;
     private Transform currentPatrolPoint;
+    private float footstepSoundTimer;
+    private bool wasMoving;
+    private int lastFootstepIndex = 0;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        idleSource = gameObject.AddComponent<AudioSource>();
+
+        foreach (var source in new[] { sfxSource, idleSource })
+        {
+            source.spatialBlend = 1f;
+            source.rolloffMode = AudioRolloffMode.Linear;
+            source.minDistance = 1f;
+            source.maxDistance = 15f;
+        }
+
+        idleSource.loop = true;
+        idleSource.clip = idleSound;
+        idleSource.volume = soundVolume * 0.5f;
+        idleSource.Play();
+
         isChasing = false;
         isAttacking = false;
         attackTimer = 0f;
-        agent.speed = killerDifficulty.moveSpeed;
+        footstepSoundTimer = 0f;
+        wasMoving = false;
 
+        agent.speed = killerDifficulty.moveSpeed;
         SetNextPatrolPoint();
     }
 
     void Update()
     {
-        // Controla a animação baseada no movimento
-        bool isMoving = agent.velocity.magnitude > 0.1f;
+        bool isMoving = agent.velocity.magnitude > 0.1f && !isAttacking;
         animator.SetBool("IsMoving", isMoving);
 
-        // Ajusta a velocidade da animação baseada na velocidade atual
+        HandleMovementSounds(isMoving);
+
         float currentSpeed = agent.velocity.magnitude;
-        float normalizedSpeed = currentSpeed / killerDifficulty.moveSpeed; // Normaliza para velocidade de patrulha
+        float normalizedSpeed = currentSpeed / killerDifficulty.moveSpeed;
 
         if (isChasing)
         {
-            normalizedSpeed = currentSpeed / killerDifficulty.chaseSpeed; // Ajusta para velocidade de perseguição
+            normalizedSpeed = currentSpeed / killerDifficulty.chaseSpeed;
             ChasePlayer();
         }
         else
@@ -57,9 +90,60 @@ public class KillerAI : MonoBehaviour
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0)
             {
-                isAttacking = false;
+                EndAttack();
             }
         }
+    }
+
+    void HandleMovementSounds(bool isMoving)
+    {
+        if (isMoving)
+        {
+            if (idleSource.isPlaying) idleSource.Stop();
+
+            float speedFactor = agent.velocity.magnitude / agent.speed;
+            float currentDelay = Mathf.Lerp(footstepSoundDelay, footstepSoundDelay * 0.7f, speedFactor);
+
+            if (footstepSoundTimer <= 0 && footstepSounds != null && footstepSounds.Length > 0)
+            {
+                int randomIndex;
+                do
+                {
+                    randomIndex = Random.Range(0, footstepSounds.Length);
+                } while (randomIndex == lastFootstepIndex && footstepSounds.Length > 1);
+
+                if (!sfxSource.isPlaying && !isAttacking)
+                {
+                    sfxSource.PlayOneShot(footstepSounds[randomIndex], soundVolume);
+                    lastFootstepIndex = randomIndex;
+                }
+
+                footstepSoundTimer = currentDelay;
+            }
+            else
+            {
+                footstepSoundTimer -= Time.deltaTime;
+            }
+
+            wasMoving = true;
+        }
+        else if (wasMoving)
+        {
+            if (idleSound != null && !idleSource.isPlaying)
+            {
+                idleSource.Play();
+            }
+
+            wasMoving = false;
+            footstepSoundTimer = 0f;
+        }
+    }
+
+    void EndAttack()
+    {
+        isAttacking = false;
+        animator.SetBool("IsAttacking", false);
+        agent.isStopped = false;
     }
 
     void Patrol()
@@ -72,6 +156,7 @@ public class KillerAI : MonoBehaviour
             }
         }
     }
+
     void SetNextPatrolPoint()
     {
         if (patrolPoints.Length == 0) return;
@@ -80,13 +165,10 @@ public class KillerAI : MonoBehaviour
         do
         {
             nextPoint = patrolPoints[Random.Range(0, patrolPoints.Length)];
-        }
-        while (nextPoint == currentPatrolPoint);
+        } while (nextPoint == currentPatrolPoint);
 
         currentPatrolPoint = nextPoint;
         agent.SetDestination(currentPatrolPoint.position);
-
-        Debug.Log("Novo ponto de patrulha: " + currentPatrolPoint.position);
     }
 
     void DetectPlayer()
@@ -131,10 +213,49 @@ public class KillerAI : MonoBehaviour
 
     void AttackPlayer()
     {
+        if (isAttacking) return;
+
         Debug.Log("Inimigo atacou o jogador!");
-        player.GetComponent<PlayerHealth>().TakeDamage(killerDifficulty.attackDamage);
+
+        // Reproduzir som de ataque como 2D temporariamente
+        if (attackSound != null)
+        {
+            sfxSource.spatialBlend = 0f; // som 2D
+            sfxSource.PlayOneShot(attackSound, soundVolume);
+            Invoke(nameof(RestoreSpatialBlend), attackSound.length);
+        }
+
+        if (player.GetComponent<PlayerHealth>() != null)
+        {
+            player.GetComponent<PlayerHealth>().TakeDamage(killerDifficulty.attackDamage);
+        }
 
         isAttacking = true;
+        animator.SetBool("IsAttacking", true);
         attackTimer = attackCooldown;
+
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+
+        Vector3 lookPos = player.position - transform.position;
+        lookPos.y = 0;
+        transform.rotation = Quaternion.LookRotation(lookPos);
+
+        Invoke("ResumeAfterAttack", attackPauseDuration);
+    }
+
+    void RestoreSpatialBlend()
+    {
+        sfxSource.spatialBlend = 1f; // volta para som 3D
+    }
+
+    void ResumeAfterAttack()
+    {
+        if (!isAttacking) return;
+
+        if (attackTimer <= 0)
+        {
+            EndAttack();
+        }
     }
 }

@@ -922,6 +922,16 @@ PrefabInstance:
       propertyPath: interactionUI
       value: 
       objectReference: {fileID: 1439446406}
+    - target: {fileID: 4348376342462050878, guid: 963a78cf90958714bafde93e20e2467c,
+        type: 3}
+      propertyPath: runningSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4348376342462050878, guid: 963a78cf90958714bafde93e20e2467c,
+        type: 3}
+      propertyPath: walkingSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8389908510790178260, guid: 963a78cf90958714bafde93e20e2467c,
         type: 3}
       propertyPath: m_Name
@@ -10586,6 +10596,14 @@ MonoBehaviour:
   - {fileID: 982341715}
   player: {fileID: 1688025845}
   attackCooldown: 2
+  attackPauseDuration: 0.5
+  attackSound: {fileID: 8300000, guid: d1448892d416e5f4cacac471bff01958, type: 3}
+  footstepSounds:
+  - {fileID: 8300000, guid: 50f7f2ed2218ced489f945330e76ca4d, type: 3}
+  - {fileID: 8300000, guid: 175648cf6c017fa40ae0a3cacb112fcf, type: 3}
+  idleSound: {fileID: 8300000, guid: 50282ad04a0ba2f40870f9fcb1aadeac, type: 3}
+  soundVolume: 0.7
+  footstepSoundDelay: 0.8
 --- !u!95 &4435658447766632860
 Animator:
   serializedVersion: 7
@@ -12400,6 +12418,12 @@ MonoBehaviour:
   - {fileID: 982341715}
   player: {fileID: 1688025845}
   attackCooldown: 2
+  attackPauseDuration: 0.5
+  attackSound: {fileID: 0}
+  footstepSounds: []
+  idleSound: {fileID: 0}
+  soundVolume: 0.7
+  footstepSoundDelay: 1
 --- !u!95 &6356672066153384306
 Animator:
   serializedVersion: 7
