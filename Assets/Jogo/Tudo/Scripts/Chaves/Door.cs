@@ -20,7 +20,7 @@ public class Door : Interactable
 
     public override void Interact()
     {
-        PlayerInteraction player = FindObjectOfType<PlayerInteraction>();
+        PlayerInteraction player = FindFirstObjectByType<PlayerInteraction>();
         if (isLocked && player != null && player.TryUseKeyOnDoor(this))
         {
             UnlockDoor();
@@ -50,5 +50,13 @@ public class Door : Interactable
     public bool CanBeOpenedWith(string keyID)
     {
         return this.doorID == keyID;
+    }
+
+    public void Unlock()
+    {
+        if (!isLocked) return;
+
+        UnlockDoor();
+        Debug.Log("Porta destrancada pelo puzzle.");
     }
 }
