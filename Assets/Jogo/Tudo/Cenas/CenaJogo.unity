@@ -404,6 +404,10 @@ MonoBehaviour:
   objectAnimator: {fileID: 212769739}
   animationBoolParam: Abre
   customMessage: 
+  audioSource: {fileID: 0}
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
+  volume: 1
 --- !u!1 &219728668
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,89 +913,6 @@ Transform:
   - {fileID: 6015893467518522325}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &387610338
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 204212613332232787, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: interactionUI
-      value: 
-      objectReference: {fileID: 1439446406}
-    - target: {fileID: 4348376342462050878, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: runningSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4348376342462050878, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: walkingSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8389908510790178260, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_Name
-      value: FPSPlayer 1 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 36.61258
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.6159611
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -61.128853
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.70710784
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.70710576
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 963a78cf90958714bafde93e20e2467c, type: 3}
 --- !u!1 &403836976
 GameObject:
   m_ObjectHideFlags: 0
@@ -2961,6 +2882,10 @@ MonoBehaviour:
   objectAnimator: {fileID: 961048504}
   animationBoolParam: Abre
   customMessage: 
+  audioSource: {fileID: 0}
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
+  volume: 1
 --- !u!1 &982341714
 GameObject:
   m_ObjectHideFlags: 0
@@ -3571,6 +3496,10 @@ MonoBehaviour:
   objectAnimator: {fileID: 1111811288}
   animationBoolParam: Abre
   customMessage: 
+  audioSource: {fileID: 0}
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
+  volume: 1
 --- !u!1 &1114614614
 GameObject:
   m_ObjectHideFlags: 0
@@ -4244,12 +4173,6 @@ Transform:
   - {fileID: 1844733506}
   m_Father: {fileID: 712412316}
   m_LocalEulerAnglesHint: {x: 0.4841702, y: -0.11803472, z: -13.700928}
---- !u!1 &1439446406 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3540374034164666857, guid: ed32039501cb60a409fe8a1e82dc4c13,
-    type: 3}
-  m_PrefabInstance: {fileID: 3123171305368409215}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1471371323
 GameObject:
   m_ObjectHideFlags: 0
@@ -4659,12 +4582,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1275750517}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1688025845 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8413357643753413456, guid: 963a78cf90958714bafde93e20e2467c,
-    type: 3}
-  m_PrefabInstance: {fileID: 387610338}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1696175193
 GameObject:
   m_ObjectHideFlags: 0
@@ -10594,7 +10511,7 @@ MonoBehaviour:
   - {fileID: 1077004296}
   - {fileID: 242475021}
   - {fileID: 982341715}
-  player: {fileID: 1688025845}
+  player: {fileID: 0}
   attackCooldown: 2
   attackPauseDuration: 0.5
   attackSound: {fileID: 8300000, guid: d1448892d416e5f4cacac471bff01958, type: 3}
@@ -12416,7 +12333,7 @@ MonoBehaviour:
   - {fileID: 1077004296}
   - {fileID: 242475021}
   - {fileID: 982341715}
-  player: {fileID: 1688025845}
+  player: {fileID: 0}
   attackCooldown: 2
   attackPauseDuration: 0.5
   attackSound: {fileID: 0}
@@ -15248,6 +15165,10 @@ MonoBehaviour:
   objectAnimator: {fileID: 9187698928120836970}
   animationBoolParam: Abre
   customMessage: 
+  audioSource: {fileID: 0}
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
+  volume: 1
 --- !u!114 &9187698928120836972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15333,6 +15254,5 @@ SceneRoots:
   - {fileID: 359817189}
   - {fileID: 3633870967562203524}
   - {fileID: 9018108347533668985}
-  - {fileID: 387610338}
   - {fileID: 459818350}
   - {fileID: 4435658447766632857}
