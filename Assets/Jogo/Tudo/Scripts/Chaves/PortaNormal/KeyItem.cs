@@ -31,7 +31,7 @@ public class KeyItem : Interactable
 
     public override string GetInteractionMessage()
     {
-        return string.IsNullOrEmpty(customMessage) ? "Pick up key " + gameObject.name : customMessage;
+        return string.IsNullOrEmpty(customMessage) ? "Pegar " + gameObject.name : customMessage;
     }
 
     public override void Interact()

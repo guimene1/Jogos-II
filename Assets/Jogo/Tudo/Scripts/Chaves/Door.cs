@@ -11,7 +11,7 @@ public class Door : Interactable
     {
         if (isLocked)
         {
-            return "Porta trancada - necessária chave: " + doorID;
+            return "Porta trancada";
         }
         return string.IsNullOrEmpty(customMessage) ?
             (doorAnimator.GetBool(openAnimationParam) ? "Fechar porta" : "Abrir porta") :

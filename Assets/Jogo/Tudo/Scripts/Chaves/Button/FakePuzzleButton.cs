@@ -16,6 +16,6 @@ public class FakePuzzleButton : Interactable
 
     public override string GetInteractionMessage()
     {
-        return "Pressionar botão (falso)";
+        return "Pressionar botão";
     }
 }

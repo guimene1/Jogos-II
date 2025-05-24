@@ -31,7 +31,21 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactionRange, interactionLayer))
         {
-            // Check for key items first
+            // Prioridade para CustomInteractable
+            CustomInteractable custom = hit.collider.GetComponent<CustomInteractable>();
+            if (custom != null)
+            {
+                ShowInteractionUI(true, custom.GetInteractionMessage());
+
+                if (Input.GetKeyDown(interactionKey) && canInteract)
+                {
+                    custom.Interact();
+                    StartCoroutine(Cooldown());
+                }
+                return;
+            }
+
+            // Check for key items
             KeyItem key = hit.collider.GetComponent<KeyItem>();
             if (key != null && heldKey == null)
             {
@@ -62,7 +76,7 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // Original interaction system for other Interactables
+            // Outros Interactables
             currentInteractable = hit.collider.GetComponent<Interactable>();
 
             if (currentInteractable != null)
