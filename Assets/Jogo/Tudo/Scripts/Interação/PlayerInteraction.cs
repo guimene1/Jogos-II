@@ -18,6 +18,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool canInteract = true;
     private float cooldownTime = 1f;
     private KeyItem heldKey;
+    private ValveItem heldValve; // New field for holding valves
 
     void Start()
     {
@@ -45,9 +46,41 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
+            // Check for valve items
+            ValveItem valve = hit.collider.GetComponent<ValveItem>();
+            if (valve != null && heldValve == null && heldKey == null)
+            {
+                currentInteractable = valve;
+                ShowInteractionUI(true, valve.GetInteractionMessage());
+
+                if (Input.GetKeyDown(interactionKey) && canInteract)
+                {
+                    valve.Interact();
+                    heldValve = valve;
+                    StartCoroutine(Cooldown());
+                }
+                return;
+            }
+
+            // Check for pipes (when holding a valve)
+            Pipe pipe = hit.collider.GetComponent<Pipe>();
+            if (pipe != null && heldValve != null)
+            {
+                ShowInteractionUI(true, "Place valve on pipe");
+
+                if (Input.GetKeyDown(interactionKey) && canInteract)
+                {
+                    if (TryPlaceValveOnPipe(pipe))
+                    {
+                        StartCoroutine(Cooldown());
+                    }
+                }
+                return;
+            }
+
             // Check for key items
             KeyItem key = hit.collider.GetComponent<KeyItem>();
-            if (key != null && heldKey == null)
+            if (key != null && heldKey == null && heldValve == null)
             {
                 currentInteractable = key;
                 ShowInteractionUI(true, key.GetInteractionMessage());
@@ -76,7 +109,7 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // Outros Interactables
+            // Other Interactables
             currentInteractable = hit.collider.GetComponent<Interactable>();
 
             if (currentInteractable != null)
@@ -118,6 +151,20 @@ public class PlayerInteraction : MonoBehaviour
             if (heldKey.TryUseKey(door))
             {
                 heldKey = null;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // New method for placing valves on pipes
+    public bool TryPlaceValveOnPipe(Pipe pipe)
+    {
+        if (heldValve != null)
+        {
+            if (heldValve.TryPlaceValve(pipe))
+            {
+                heldValve = null;
                 return true;
             }
         }
