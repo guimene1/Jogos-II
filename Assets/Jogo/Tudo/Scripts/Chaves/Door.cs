@@ -7,6 +7,12 @@ public class Door : Interactable
     public string openAnimationParam = "isOpen";
     public bool isLocked = true;
 
+    [Header("Configura��es de �udio")]
+    public AudioSource openAudio;
+    public AudioSource closeAudio;
+    public AudioSource unlockAudio;
+    public AudioSource lockedAudio;
+
     public override string GetInteractionMessage()
     {
         if (isLocked)
@@ -30,12 +36,26 @@ public class Door : Interactable
         {
             OpenCloseDoor();
         }
+        else if (isLocked)
+        {
+            // Tocar som de porta trancada quando o jogador tenta abrir sem chave
+            if (lockedAudio != null)
+            {
+                lockedAudio.Play();
+            }
+        }
     }
 
     private void UnlockDoor()
     {
         isLocked = false;
         Debug.Log("Porta destrancada: " + gameObject.name);
+
+        // Tocar som de destrancar
+        if (unlockAudio != null)
+        {
+            unlockAudio.Play();
+        }
     }
 
     private void OpenCloseDoor()
@@ -44,6 +64,24 @@ public class Door : Interactable
         {
             bool currentState = doorAnimator.GetBool(openAnimationParam);
             doorAnimator.SetBool(openAnimationParam, !currentState);
+
+            // Tocar o som apropriado
+            if (!currentState)
+            {
+                // Porta est� abrindo
+                if (openAudio != null)
+                {
+                    openAudio.Play();
+                }
+            }
+            else
+            {
+                // Porta est� fechando
+                if (closeAudio != null)
+                {
+                    closeAudio.Play();
+                }
+            }
         }
     }
 
