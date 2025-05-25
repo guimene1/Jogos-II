@@ -26,5 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Jogo/Tudo/Cenas/cenaconstrucao.unity
     guid: 69262264f2885194997acdaa0d7288c4
+  - enabled: 1
+    path: Assets/Jogo/Tudo/Cenas/GameOver.unity
+    guid: ec42d29e39779504bb318439af999e24
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

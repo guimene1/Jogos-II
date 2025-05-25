@@ -49,6 +49,8 @@ public class SC_FPSController : MonoBehaviour
 
     void Update()
     {
+
+        
         // Handle crouch input (toggle)
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
