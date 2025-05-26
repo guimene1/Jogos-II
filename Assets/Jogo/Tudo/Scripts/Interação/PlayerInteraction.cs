@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,7 +9,7 @@ public class PlayerInteraction : MonoBehaviour
     public float interactionRange = 2.0f;
     public LayerMask interactionLayer;
     public KeyCode interactionKey = KeyCode.E;
-
+    public static event Action OnHoldingSpecialItem;
     public GameObject interactionUI;
     public TextMeshProUGUI interactionText;
 
@@ -18,7 +18,10 @@ public class PlayerInteraction : MonoBehaviour
     private bool canInteract = true;
     private float cooldownTime = 1f;
     private KeyItem heldKey;
-    private ValveItem heldValve; // New field for holding valves
+    private ValveItem heldValve;
+
+    // Novo: Referência ao SpecialClickItem
+    private SpecialClickItem heldSpecialClickItem;
 
     void Start()
     {
@@ -27,12 +30,17 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        // Novo: Invoca o evento somente se estiver segurando o item especial
+        if (heldSpecialClickItem != null)
+        {
+            OnHoldingSpecialItem?.Invoke();
+        }
+
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, interactionRange, interactionLayer))
         {
-            // Prioridade para CustomInteractable
             CustomInteractable custom = hit.collider.GetComponent<CustomInteractable>();
             if (custom != null)
             {
@@ -46,9 +54,8 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // Check for valve items
             ValveItem valve = hit.collider.GetComponent<ValveItem>();
-            if (valve != null && heldValve == null && heldKey == null)
+            if (valve != null && heldValve == null && heldKey == null && heldSpecialClickItem == null)
             {
                 currentInteractable = valve;
                 ShowInteractionUI(true, valve.GetInteractionMessage());
@@ -62,7 +69,6 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // Check for pipes (when holding a valve)
             Pipe pipe = hit.collider.GetComponent<Pipe>();
             if (pipe != null && heldValve != null)
             {
@@ -78,9 +84,24 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // Check for key items
+            // Verifica se é um item especial
+            SpecialClickItem special = hit.collider.GetComponent<SpecialClickItem>();
+            if (special != null && heldKey == null && heldValve == null && heldSpecialClickItem == null)
+            {
+                currentInteractable = special;
+                ShowInteractionUI(true, special.GetInteractionMessage());
+
+                if (Input.GetKeyDown(interactionKey) && canInteract)
+                {
+                    special.Interact();
+                    heldSpecialClickItem = special;
+                    StartCoroutine(Cooldown());
+                }
+                return;
+            }
+
             KeyItem key = hit.collider.GetComponent<KeyItem>();
-            if (key != null && heldKey == null && heldValve == null)
+            if (key != null && heldKey == null && heldValve == null && heldSpecialClickItem == null)
             {
                 currentInteractable = key;
                 ShowInteractionUI(true, key.GetInteractionMessage());
@@ -94,7 +115,6 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // Check for doors
             Door door = hit.collider.GetComponent<Door>();
             if (door != null)
             {
@@ -109,9 +129,7 @@ public class PlayerInteraction : MonoBehaviour
                 return;
             }
 
-            // Other Interactables
             currentInteractable = hit.collider.GetComponent<Interactable>();
-
             if (currentInteractable != null)
             {
                 ShowInteractionUI(true, currentInteractable.GetInteractionMessage());
@@ -157,7 +175,6 @@ public class PlayerInteraction : MonoBehaviour
         return false;
     }
 
-    // New method for placing valves on pipes
     public bool TryPlaceValveOnPipe(Pipe pipe)
     {
         if (heldValve != null)
@@ -169,6 +186,11 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void ClearHeldSpecialClickItem()
+    {
+        heldSpecialClickItem = null;
     }
 
     private IEnumerator Cooldown()

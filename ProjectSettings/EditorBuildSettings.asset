@@ -29,5 +29,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Jogo/Tudo/Cenas/GameOver.unity
     guid: ec42d29e39779504bb318439af999e24
+  - enabled: 1
+    path: Assets/Jogo/Tudo/Cenas/FIM.unity
+    guid: 940d291641aefa8428ccac8e8a8b0852
+  - enabled: 1
+    path: Assets/Jogo/Tudo/Cenas/cemiterioconstrucao.unity
+    guid: d0be7d38cf6c9534a86c0a282e2ce7ec
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

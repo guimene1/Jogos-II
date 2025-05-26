@@ -204,7 +204,7 @@ public class KillerAI : MonoBehaviour
         }
     }
 
-    void StopChase()
+    public void StopChase()
     {
         isChasing = false;
         agent.speed = killerDifficulty.moveSpeed;
