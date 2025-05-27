@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3977878333056526084}
   - component: {fileID: 7281982662736933068}
   - component: {fileID: 7334028381864693455}
+  - component: {fileID: 9119467847923727486}
   m_Layer: 0
   m_Name: lanterna
   m_TagString: Untagged
@@ -86,6 +87,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &9119467847923727486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403418108756178716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ac4a56d3cc92754da307d7385c22b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3086389201017041318
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +356,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   interactionKey: 101
-  interactionUI: {fileID: 0}
+  interactionUI: {fileID: 5640694785819657736, guid: 0ad4250bdd2ad2547b51d98a1a66faed,
+    type: 3}
   interactionText: {fileID: 0}
 --- !u!114 &3778198649770721258
 MonoBehaviour:
@@ -357,7 +371,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349cbd28dc660ea43ada5d39da87877d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  maxHealth: 100
+  currentHealth: 0
+  healthSlider: {fileID: 0}
+  gameOverScene: GameOver
 --- !u!114 &7317139375424245701
 MonoBehaviour:
   m_ObjectHideFlags: 0

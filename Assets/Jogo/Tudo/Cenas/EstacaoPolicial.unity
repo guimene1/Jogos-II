@@ -942,7 +942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 3703785851483212463}
-  sceneName: cenaconstrucao
+  sceneName: Hospital
   teleportDelay: 2
   isTrigger: 1
 --- !u!1 &331294729

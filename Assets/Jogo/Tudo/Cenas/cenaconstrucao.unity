@@ -10077,6 +10077,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3893393356456816763, guid: 0ad4250bdd2ad2547b51d98a1a66faed,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4214672944061075574, guid: 0ad4250bdd2ad2547b51d98a1a66faed,
         type: 3}
       propertyPath: m_Pivot.x
@@ -10181,6 +10186,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243923860406099001, guid: 0ad4250bdd2ad2547b51d98a1a66faed,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40667,6 +40677,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 445774876}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &1142378739 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5640694785819657736, guid: 0ad4250bdd2ad2547b51d98a1a66faed,
+    type: 3}
+  m_PrefabInstance: {fileID: 268000388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1148752900
 GameObject:
   m_ObjectHideFlags: 0
@@ -44824,6 +44840,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1270172276}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1273460347 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2610100414760836268, guid: 0ad4250bdd2ad2547b51d98a1a66faed,
+    type: 3}
+  m_PrefabInstance: {fileID: 268000388}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1274385682
 GameObject:
   m_ObjectHideFlags: 0
@@ -60957,6 +60985,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1968221180046714135, guid: 55d58ec8e7506264298466ddc2ef8ec5,
+        type: 3}
+      propertyPath: interactionUI
+      value: 
+      objectReference: {fileID: 1142378739}
+    - target: {fileID: 1968221180046714135, guid: 55d58ec8e7506264298466ddc2ef8ec5,
+        type: 3}
+      propertyPath: interactionText
+      value: 
+      objectReference: {fileID: 1273460347}
     - target: {fileID: 3069403190249658855, guid: 55d58ec8e7506264298466ddc2ef8ec5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -61006,6 +61044,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3778198649770721258, guid: 55d58ec8e7506264298466ddc2ef8ec5,
+        type: 3}
+      propertyPath: healthSlider
+      value: 
+      objectReference: {fileID: 1899532235}
+    - target: {fileID: 3778198649770721258, guid: 55d58ec8e7506264298466ddc2ef8ec5,
+        type: 3}
+      propertyPath: gameOverScene
+      value: GaneOver
       objectReference: {fileID: 0}
     - target: {fileID: 7307511417841566300, guid: 55d58ec8e7506264298466ddc2ef8ec5,
         type: 3}
@@ -63981,6 +64029,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897400774}
   m_Mesh: {fileID: -1175113207750025077, guid: 03c49afc1c6d9e34c942f96da0b2af82, type: 3}
+--- !u!114 &1899532235 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4886345131227969109, guid: 0ad4250bdd2ad2547b51d98a1a66faed,
+    type: 3}
+  m_PrefabInstance: {fileID: 268000388}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1903408611
 GameObject:
   m_ObjectHideFlags: 0

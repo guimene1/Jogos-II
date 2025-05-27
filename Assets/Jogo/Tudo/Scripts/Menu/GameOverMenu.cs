@@ -13,7 +13,7 @@ public class GameOverManager : MonoBehaviour
 
     public void RestartGame()
     {
-        SceneManager.LoadScene("cenaconstrucao"); 
+        SceneManager.LoadScene("Hospital"); 
     }
 
     public void GoToMainMenu()
