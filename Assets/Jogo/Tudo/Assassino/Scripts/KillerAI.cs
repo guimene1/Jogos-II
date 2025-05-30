@@ -10,6 +10,9 @@ public class KillerAI : MonoBehaviour
     public float attackCooldown = 2f;
     public float attackPauseDuration = 0.5f;
 
+
+    [HideInInspector] public bool isInSafeZone = false;
+
     public AudioClip attackSound;
     public AudioClip[] footstepSounds;
     public AudioClip idleSound;
@@ -64,6 +67,20 @@ public class KillerAI : MonoBehaviour
 
     void Update()
     {
+
+        if (isInSafeZone)
+{
+    isChasing = false;
+    isAttacking = false;
+    attackTimer = 0f;
+    agent.speed = killerDifficulty.moveSpeed;
+
+    Patrol(); // volta a patrulhar normalmente
+
+    return;
+}
+
+
         bool isMoving = agent.velocity.magnitude > 0.1f && !isAttacking;
         animator.SetBool("IsMoving", isMoving);
 
@@ -172,13 +189,15 @@ public class KillerAI : MonoBehaviour
     }
 
     void DetectPlayer()
+{
+    if (isInSafeZone) return;
+
+    float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+    if (distanceToPlayer <= killerDifficulty.detectionRange)
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distanceToPlayer <= killerDifficulty.detectionRange)
-        {
-            StartChase();
-        }
+        StartChase();
     }
+}
 
     void StartChase()
     {
@@ -211,9 +230,12 @@ public class KillerAI : MonoBehaviour
         SetNextPatrolPoint();
     }
 
+
+
+
     void AttackPlayer()
     {
-        if (isAttacking) return;
+        if (isAttacking || isInSafeZone) return;
 
         Debug.Log("Inimigo atacou o jogador!");
 
@@ -258,4 +280,6 @@ public class KillerAI : MonoBehaviour
             EndAttack();
         }
     }
+
+
 }

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   difficultyName: Normal
   moveSpeed: 2
-  chaseSpeed: 2.5
+  chaseSpeed: 4
   attackDamage: 25
-  detectionRange: 5
-  attackRange: 3
-  chaseDuration: 10
-  patrolWaitTime: 6
+  detectionRange: 10
+  attackRange: 2
+  chaseDuration: 15
+  patrolWaitTime: 4
