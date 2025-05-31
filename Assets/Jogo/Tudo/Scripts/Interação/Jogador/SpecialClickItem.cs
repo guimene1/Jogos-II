@@ -7,7 +7,7 @@ public class SpecialClickItem : Interactable
     public GameObject objectToDisappear;
     public GameObject objectToSpawn;
     public Transform spawnPosition;
-public Vector3 spawnRotation = Vector3.zero;
+    public Vector3 spawnRotation = Vector3.zero;
 
     [Header("Holding Settings")]
     public Transform targetPosition;
@@ -15,9 +15,20 @@ public Vector3 spawnRotation = Vector3.zero;
     public Vector3 rotationOffset = Vector3.zero;
     public float scaleCorrection = 1f;
 
+    [Header("Click Effects")]
+    public GameObject clickEffectPrefab; // Prefab do efeito visual ao clicar
+    public float effectDuration = 0.3f; // Duração do efeito
+    public Vector3 effectOffset = new Vector3(0, 0, 0.5f); // Posição relativa do efeito
+
     [Header("Audio")]
-    public AudioClip clickSound; // 🔊 Som do clique
+    public AudioClip clickSound; // Som para cada clique
+    public AudioClip successSound; // Som quando completa a ação especial
+    public AudioClip healSound; // Som de cura (novo)
     private AudioSource audioSource;
+
+    [Header("Health Settings")]
+    public bool givesHealth = false; // Se o item recupera vida
+    public int healthAmount = 25; // Quantidade de vida recuperada
 
     private bool isHeld = false;
     private GameObject heldItemInstance;
@@ -49,7 +60,7 @@ public Vector3 spawnRotation = Vector3.zero;
         heldItemInstance.transform.localRotation = Quaternion.Euler(rotationOffset);
         heldItemInstance.transform.localScale *= scaleCorrection;
 
-        // Adiciona um AudioSource no objeto segurado, se não existir
+        // Configura o AudioSource
         audioSource = heldItemInstance.GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -67,12 +78,22 @@ public Vector3 spawnRotation = Vector3.zero;
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // 🔊 Toca som de clique se houver
+            // Toca som de clique
             if (clickSound != null && audioSource != null)
             {
                 audioSource.PlayOneShot(clickSound);
             }
 
+            // Cria efeito visual
+            if (clickEffectPrefab != null && heldItemInstance != null)
+            {
+                Vector3 effectPosition = heldItemInstance.transform.position + 
+                                     heldItemInstance.transform.TransformDirection(effectOffset);
+                GameObject effect = Instantiate(clickEffectPrefab, effectPosition, heldItemInstance.transform.rotation);
+                Destroy(effect, effectDuration);
+            }
+
+            // Contagem de cliques
             if (Time.time - lastClickTime < doubleClickDelay)
             {
                 clickCount++;
@@ -85,7 +106,7 @@ public Vector3 spawnRotation = Vector3.zero;
 
             lastClickTime = Time.time;
 
-            if (clickCount >= 4)
+            if (clickCount >= 7)
             {
                 ActivateSpecialAction();
                 clickCount = 0;
@@ -93,31 +114,48 @@ public Vector3 spawnRotation = Vector3.zero;
         }
     }
 
-   private void ActivateSpecialAction()
+    private void ActivateSpecialAction()
     {
+        // Ação de desaparecer objeto
         if (objectToDisappear != null)
         {
             objectToDisappear.SetActive(false);
         }
 
+        // Ação de spawnar objeto
         if (objectToSpawn != null && spawnPosition != null)
         {
-            // Instancia o objeto e aplica a rotação personalizada
             GameObject spawnedObj = Instantiate(
                 objectToSpawn, 
                 spawnPosition.position, 
-                spawnPosition.rotation * Quaternion.Euler(spawnRotation) // 🔄 Aplica a rotação extra
+                spawnPosition.rotation * Quaternion.Euler(spawnRotation)
             );
+
+            // Configura áudio no objeto spawnado
+            AudioSource spawnAudio = spawnedObj.GetComponent<AudioSource>();
+            if (spawnAudio == null) spawnAudio = spawnedObj.AddComponent<AudioSource>();
+            if (successSound != null) spawnAudio.PlayOneShot(successSound);
         }
 
-        // Não destrói o item segurado (opcional)
-        clickCount = 0;
-
-        // Toca um som de confirmação (opcional)
-        if (clickSound != null && audioSource != null)
+        // Ação de curar
+        if (givesHealth)
         {
-            audioSource.PlayOneShot(clickSound);
+            PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.Heal(healthAmount);
+                if (healSound != null && audioSource != null)
+                {
+                    audioSource.PlayOneShot(healSound);
+                }
+            }
         }
+        else if (successSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(successSound);
+        }
+
+        clickCount = 0;
     }
 
     private void OnDestroy()
